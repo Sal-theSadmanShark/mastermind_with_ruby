@@ -14,6 +14,19 @@ loop do
   break if 1 <= mode && mode <= 4
 end
 
+
+# set game difficulty
+puts 'please select the game difficult - (default is easy)'
+puts '[ 1:easy(12 tries),  2:normal(8 tries),  3:hard(5 tries) ]'
+i = gets.chomp
+if 1 <= i.to_i && i.to_i <= 3
+  turns = 12 if i == '1'
+  turns = 8 if i == '2'
+  turns = 5 if i == '3'
+else
+  turns = 12
+end
+
 # make player objects
 puts 'please input the name of player1 , the code maker '
 n = gets.chomp
@@ -43,7 +56,7 @@ p1.set_combination
 puts
 
 # initialize core
-game = Core.new(p1.name, p2.name, p1.input_slot)
+game = Core.new(turns, p1.name, p2.name, p1.input_slot)
 puts "initializing game with #{p1.name} as the #{p1.role} and #{p2.name} as the #{p2.role} "
 buffer = gets.chomp
 
@@ -53,7 +66,7 @@ puts "welcome to mastermind"
 puts " this is a command line interface of the famous 70's board game 'Mastermind' "
 puts "this version uses a set of six colors to represent the pegs of the board"
 puts "each sequence must consist of four colors"
-puts "and the guesser has 12 rounds to figure out the sequence"
+puts "and the guesser has #{turns} rounds to figure out the sequence"
 puts buffer
 game.play_intro
 

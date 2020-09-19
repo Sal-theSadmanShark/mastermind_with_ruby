@@ -2,14 +2,15 @@ class Core
   attr_reader :code_breaker, :code_maker
 
   COLOR_SET = ['red', 'green', 'blue', 'yellow', 'violet', 'orange'].freeze
-  def initialize(code_maker = 'bot', code_breaker = 'human', secret_code)
+  def initialize(turns = 12, code_maker = 'bot', code_breaker = 'human', secret_code)
     @code_maker = code_maker
     @code_breaker = code_breaker
     @secret_code = secret_code
     @game_status = "start"
-    @turn_num = 1
     @round_num = 1
+    @turn_num = 1
     @code_maker_score = 2               # one variable for both player score tracking . 0 for lose, 4 for win
+    @turns = turns.freeze
   end
 
   def check_game_over
@@ -49,7 +50,7 @@ class Core
   def print_introduction
     puts "the first game has started "
     puts "#{code_maker} has set the sequence"
-    puts "#{code_breaker} has 12 rounds to guess the sequence "
+    puts "#{code_breaker} has #{@turns} rounds to guess the sequence "
     puts "the available colors are #{COLOR_SET} "
     puts "press enter to continue"
     buffer = gets.chomp
@@ -84,7 +85,7 @@ class Core
   end
 
   def print_turn(player_input)          # takes int or color ref array anr prints turn info into screen
-    puts "#{code_breaker} has #{12-@turn_num} turns left "
+    puts "#{code_breaker} has #{@turns-@turn_num} turns left "
     puts
     puts 'the code is being checked'
     buffer = gets
@@ -92,7 +93,7 @@ class Core
     color, white = pegs_arr[0], pegs_arr[1]
     puts "the sumbitted input : #{pegs_arr[2]}"
     case
-    when color != 4 && (12-@turn_num) == 0
+    when color != 4 && (@turns-@turn_num) == 0
       puts "there are no similarities"
       buffer = gets
       puts "round over! #{code_breaker} has lost"
