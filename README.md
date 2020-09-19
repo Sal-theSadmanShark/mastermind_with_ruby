@@ -2,6 +2,8 @@
 a command line version of mastermind
 made by salim sadman
 
+view on repl : [![Run on Repl.it](https://repl.it/badge/github/Sal-theSadmanShark/mastermind_with_ruby)](https://repl.it/github/Sal-theSadmanShark/mastermind_with_ruby)
+
 <pre>
 <strong>Thoughts:</strong>
 
