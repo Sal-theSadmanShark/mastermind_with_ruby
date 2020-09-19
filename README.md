@@ -2,6 +2,7 @@
 a command line version of mastermind
 made by salim sadman
 
+<pre>
 Thoughts:
 
 This the longest code i've written so far . It contains 3 files of more than 100 lines of code . I took an object oriented approach . The aim was the decrease dependencies among files and ease up the debugging process . The end product was easier to debug and it was a lot cleaner than my other projects . I used a modified version of Donald Knuth's five-guess algorith for the bot . I took my time while writing this and it took me well over a week to finish it properly
@@ -41,8 +42,8 @@ Main.rb
 	makes objects according to player inputs
 	maintains the bot dependencies
 	checks for game end
+</pre>
 
-	
 
 
 
