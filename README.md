@@ -5,7 +5,13 @@ made by salim sadman
 <pre>
 <strong>Thoughts:</strong>
 
-This the longest code i've written so far . It contains 3 files of more than 100 lines of code . I took an object oriented approach . The aim was the decrease dependencies among files and ease up the debugging process . The end product was easier to debug and it was a lot cleaner than my other projects . I used a modified version of Donald Knuth's five-guess algorith for the bot . I took my time while writing this and it took me well over a week to finish it properly
+This the longest code i've written so far .
+It contains 3 files of more than 100 lines of code . 
+I took an object oriented approach . 
+The aim was the decrease dependencies among files and ease up the debugging process . 
+The end product was easier to debug and it was a lot cleaner than my other projects . 
+I used a modified version of Donald Knuth's five-guess algorith for the bot . 
+I took my time while writing this and it took me well over a week to finish it properly
 
 
 <strong>Code description:</strong>
@@ -32,8 +38,11 @@ made 3 files named core, players and main.
 	 uses the stored similarities value to calculate guess between turns -
 	 	1. make a set S conatining values from 1111 to 6666
 	 	2. play 1234 as the initial guess in the first turn
-	 	3. check for whites(correct num wrong position) and colors(correct number and position)
-	 	4. remove all the elements from S , which wouldn't score the same num of whites and colors if compared to 	the last guess . (1234 if this is the 2nd turn)
+	 	3. check for whites(correct num wrong position) 
+	 	   and colors(correct number and position)
+	 	4. remove all the elements from S , which wouldn't score
+	 	   the same num of whites and colors if compared to the 
+	 	   last guess . (1234 if this is the 2nd turn)
 	 	5. use the first element of  modified S as the new guess
 	 	6. if the guess hasn't matched , repeat step 4. until it does
 <i>Main.rb</i>
