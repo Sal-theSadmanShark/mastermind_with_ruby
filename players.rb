@@ -125,7 +125,7 @@ class Bot < Players
   def bot_filter_guesslist
     return 0 if @similarities == nil
     ref_c, ref_w = @similarities
-    @supset.filter! do |element|
+    @supset.select! do |element|
       color, white = bot_check_code(element)
       color != "has 0" && ref_c == color && ref_w == white
     end
