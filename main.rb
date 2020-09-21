@@ -29,20 +29,20 @@ end
 
 # make player objects
 puts 'please input the name of player1 , the code maker '
-n = gets.chomp
-n = 'player1' if n.length == 0
+p1n = gets.chomp
+p1n = 'player1' if p1n.length == 0
 if mode == 1 || mode == 4
-  p1 = Bot.new(n)
+  p1 = Bot.new(p1n)
 else
-  p1 = Human.new(n)
+  p1 = Human.new(p1n)
 end
 puts 'please input the name of player2 , the code breaker '
-n = gets.chomp
-n = 'player2' if n.length == 0
+p2n = gets.chomp
+p2n = 'player2' if p2n.length == 0
 if mode == 2 || mode == 4
-  p2 = Bot.new(n)
+  p2 = Bot.new(p2n)
 else
-  p2 = Human.new(n)
+  p2 = Human.new(p2n)
 end
 
 #set roles
@@ -67,7 +67,9 @@ puts " this is a command line interface of the famous 70's board game 'Mastermin
 puts "this version uses a set of six colors to represent the pegs of the board"
 puts "each sequence must consist of four colors"
 puts "and the guesser has #{turns} rounds to figure out the sequence"
-puts buffer
+puts "the program has a lot of pauses , press enter to continue them"
+puts "press ENTER"
+buffer = gets.chomp
 game.play_intro
 
 #round loop
@@ -75,7 +77,7 @@ game.play_turn_prefix
 loop do
   p2.guess_combination
   p2.bot_get_similarities(game.check_similarities_for_bot(p2.input_slot, p2.id)) if p2.id == 'bot'
-  break if game.play_turn_check_end(p2.input_slot) == "1"
+  break if game.play_turn_check_end?(p2.input_slot)
   puts "next turn"
 end
 # end of round 1
@@ -92,7 +94,7 @@ game.play_turn_prefix
 loop do
   p2.guess_combination
   p2.bot_get_similarities(game.check_similarities_for_bot(p2.input_slot, p2.id)) if p2.id == 'bot'
-  break if game.play_turn_check_end(p2.input_slot) == "1"
+  break if game.play_turn_check_end?(p2.input_slot)
   puts "next turn"
 end
 # end of round 2
@@ -101,21 +103,26 @@ buffer = gets.chomp
 
 
 #start round 3 if game has not ended
-unless game.check_game_over
+unless game.check_game_over?
   p2.bot_reset_algo if p2.id == 'bot'
   #  new secret code
-  p1.set_combiantion # take secret code from p1
-  game.set_game_combiantion(p1.input_slot)
+  p1.set_combination # take secret code from p1
+  game.set_game_combination(p1.input_slot)
 
   #round loop
   game.play_turn_prefix
   loop do
     p2.guess_combination
     p2.bot_get_similarities(game.check_similarities_for_bot(p2.input_slot, p2.id)) if p2.id == 'bot'
-    break if game.play_turn_check_end(p2.input_slot) == "1"
+    break if game.play_turn_check_end?(p2.input_slot)
     puts "next turn"
   end
 end
+
+#buffer handler
+buffer = nil
+print buffer
+
 
 puts
 puts

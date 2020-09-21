@@ -13,9 +13,8 @@ class Core
     @turns = turns.freeze
   end
 
-  def check_game_over
-    return true if @game_status == "over"
-    false
+  def check_game_over?
+    @game_status == "over"
   end
 
   def play_intro
@@ -28,8 +27,8 @@ class Core
     puts
   end
 
-  def play_turn_check_end(inp)          # plays a turn and check if round has ended
-    print_turn(inp) == 1 ? "1" : "0"
+  def play_turn_check_end?(inp)          # plays a turn and check if round has ended
+    print_turn(inp) == 1
   end
 
   # if play_turn_check_end() == "1", new_secret_code() must be initialized
@@ -55,23 +54,73 @@ class Core
     puts "press enter to continue"
     buffer = gets.chomp
     puts
-    puts buffer
+    buffer
   end
 
-  def print_round(current_player)       # changes stats and prints the game round after every win / lose
-    puts "end of round #{@round_num}"
+  def print_turn(player_input)          # takes int or color ref array and prints turn info into screen
+    puts "#{code_breaker} has #{@turns-@turn_num} turns left "
+    puts
+    puts 'the code is being checked'
     buffer = gets
-    puts buffer
-    if @round_num == 1
-      puts "if #{code_maker} loses another round , #{code_breaker} wins" if @code_maker_score == 1
-      puts "if #{code_maker} wins another round , #{code_breaker} loses" if @code_maker_score == 3
-    elsif @round_num == 3 || @code_maker_score == 0 || @code_maker_score == 4
+    pegs_arr = check_code(player_input) # pegs_arr = [colored pegs, white pegs, input array in color]
+    color, white, player_input = pegs_arr
+    puts "the submitted input : #{player_input}"
+    @turn_num += 1
+    color_output_cases(color, white, buffer)
+  end
+
+  def color_output_cases(color, white, buffer = nil)
+    case
+    when color == 4
+      puts "congratulations! #{code_breaker} cracked the code !!"
+      puts
+      buffer = gets
+      @code_maker_score -= 1
+      print_round
+      return 1
+    when color == 0 && white == 0
+      puts "there are no similarities"
+      if (@turns-@turn_num) == 0
+        round_lost
+        return 1
+      end
+      buffer = gets
+    else
+      puts "the number of coloured pegs is #{color}"
+      puts "the number of white pegs is #{white}"
+      if (@turns-@turn_num) == 0
+        round_lost
+        return 1
+      end
+      buffer = gets
+    end
+    return 0
+  end
+
+  def round_lost
+    puts
+    puts "round over! #{code_breaker} has lost"
+    puts
+    @code_maker_score += 1
+    print_round
+  end
+
+  def print_round                       # changes stats and prints the game round after every win / lose
+    puts
+    puts "end of round #{@round_num}"
+    puts "---------------------------------------------------------------------"
+    puts
+    buffer = gets
+    buffer = nil
+    if @round_num == 3 || @code_maker_score == 0 || @code_maker_score == 4
       puts "#{code_breaker} wins this game !!" if @code_maker_score < 2
       puts "#{code_maker} wins this game !!" if @code_maker_score > 2
       buffer = gets
       @game_status = "over"             # this indicates game over
-      return nil
+      return 0
     end
+    puts "if #{code_maker} loses another round , #{code_breaker} wins" if @code_maker_score == 1
+    puts "if #{code_maker} wins another round , #{code_breaker} loses" if @code_maker_score == 3
     puts "#{3-@round_num} rounds left"
     puts "setting up new round....."
     puts
@@ -79,46 +128,10 @@ class Core
     puts
     puts "setting up the new sequence "
     puts
-    @turn_num = 1
     @round_num += 1
+    @turn_num = 1
     @game_status = "ongoing"            # this indicates the request for a new color sequence
-  end
-
-  def print_turn(player_input)          # takes int or color ref array anr prints turn info into screen
-    puts "#{code_breaker} has #{@turns-@turn_num} turns left "
-    puts
-    puts 'the code is being checked'
-    buffer = gets
-    pegs_arr = check_code(player_input) # pegs_arr = [colored pegs, white pegs, input array in color]
-    color, white = pegs_arr[0], pegs_arr[1]
-    puts "the sumbitted input : #{pegs_arr[2]}"
-    case
-    when color != 4 && (@turns-@turn_num) == 0
-      puts "there are no similarities"
-      buffer = gets
-      puts "round over! #{code_breaker} has lost"
-      puts
-      @code_maker_score += 1
-      print_round(code_breaker)
-      return 1
-    when color == 0 && white == 0
-      buffer = gets
-      puts "there are no similarities"
-    when color == 4
-      puts "congratulations! #{code_breaker} cracked the code !!"
-      puts
-      buffer = gets
-      @code_maker_score -= 1
-      print_round(code_breaker)
-      return 1
-    else
-      puts "the number of coloured pegs is #{color}"
-      puts "the number of white pegs is #{white}"
-      buffer = gets
-    end
-    puts buffer
-    @turn_num += 1
-    return 0
+    buffer
   end
 
   def set_new_code(new_code)            # changes the secret code
