@@ -31,8 +31,6 @@ class Core
     print_turn(inp) == 1
   end
 
-  # if play_turn_check_end() == "1", new_secret_code() must be initialized
-
   def set_game_combination(code)
     puts 'ERROR' if @round_num == 1
     set_new_code(code)
@@ -56,7 +54,7 @@ class Core
     buffer
   end
 
-  def print_turn(player_input)          # takes int or color ref array and prints turn info into screen
+  def print_turn(player_input)          # takes int or color ref array and prints turn info on screen
     puts "#{code_breaker} has #{@turns - @turn_num} turns left "
     puts
     puts 'the code is being checked'
@@ -93,7 +91,8 @@ class Core
       end
       buffer = gets
     end
-    0
+    buffer = 0
+    buffer
   end
 
   def round_lost
